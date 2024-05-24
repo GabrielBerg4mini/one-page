@@ -16,7 +16,16 @@
     <header class="wrapper bg-gray">
         <?php get_header(); ?>
     </header>
-
+    <main>
+        <?php
+        while (have_posts()) : the_post();
+            //exibir o titulo da página
+            the_title('<h1>', '</h1>');
+            //exibir o conteúdo da página
+            the_content();
+        endwhile;
+        ?>
+    </main>
     <footer class="bg-dark text-inverse">
         <?php get_footer(); ?>
     </footer>
