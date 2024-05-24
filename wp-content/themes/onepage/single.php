@@ -17,6 +17,22 @@
         <?php get_header(); ?>
     </header>
 
+    <main class="container pt-10 pb-14">
+        <?php
+        if (have_posts()) :
+            while (have_posts()) : the_post();
+        ?>
+                <div>
+                    <h2><?php the_title(); ?></h2>
+                    <div><?php the_content(); ?></div>
+                </div>
+        <?php
+            endwhile;
+        else :
+            _e('Desculpe, não há posts para exibir.');
+        endif; ?>
+    </main>
+
     <footer class="bg-dark text-inverse">
         <?php get_footer(); ?>
     </footer>
