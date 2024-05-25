@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg center-logo transparent navbar-light">
     <div class="container flex-lg-row flex-nowrap align-items-center">
         <div class="navbar-brand w-100">
-            <a href="./index.html">
+            <a href="http://localhost:8080">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo.png" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/logo@2x.png 2x" alt="" />
             </a>
         </div>
