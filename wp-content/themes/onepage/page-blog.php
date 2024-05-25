@@ -19,12 +19,16 @@
     </header>
 
     <main class="wrapper-posts pt-10 pb-14">
-        <div class="blog-posts">
+        <section class="blog-posts">
             <?php
+            //argumentos para consulta das páginas
+            $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
             // Define os argumentos para a consulta
             $args = array(
                 'post_type' => 'post',
-                'posts_per_page' => 10,
+                'posts_per_page' => 12,
+                'paged' => $paged,
             );
 
             // Faz a consulta
@@ -34,9 +38,9 @@
             if ($blog_posts->have_posts()) :
                 while ($blog_posts->have_posts()) : $blog_posts->the_post();
             ?>
-                    <div class="blog-post">
+                    <article class="blog-post">
                         <a href="<?php the_permalink(); ?>">
-                            <h2 class=""><?php the_title(); ?></h2>
+                            <h2 class="title-blog"><?php the_title(); ?></h2>
                         </a>
                         <div class="container-img-blog">
                             <?php
@@ -50,10 +54,10 @@
                         <div class="blog-content">
                             <?php the_excerpt(); ?>
                         </div>
-                        <div>
-                            <a class="link-blog" href="<?php get_permalink() ?>">Ler mais...</a>
-                        </div>
-                    </div>
+
+                        <a class="link-blog" href="<?php echo get_permalink() ?>">Ler mais...</a>
+
+                    </article>
             <?php
                 endwhile;
                 // Restaura os dados do post original
@@ -62,7 +66,22 @@
                 _e('Desculpe, não há posts para exibir.');
             endif;
             ?>
-        </div>
+        </section>
+        <section class="pagination">
+            <?php
+            //Paginação
+            $numberBig = 999999999;
+            echo paginate_links(array(
+                'base' => str_replace($numberBig, '%#%', esc_url(get_pagenum_link($numberBig))),
+                'format' => '?paged=%#%',
+                'current' => max(1, get_query_var('paged')),
+                'total' => $blog_posts->max_num_pages,
+            ));
+
+            //restaura os dados do post original
+            wp_reset_postdata();
+            ?>
+        </section>
     </main>
 
     <footer class="bg-dark text-inverse">

@@ -8,12 +8,13 @@
   width: 80%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  gap: 1rem;
   margin: 0 auto;
 }
 
 .blog-post {
   width: 480px;
+  height: 800px;
   padding: 1rem;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.274);
   display: flex;
@@ -32,6 +33,9 @@
 .container-img-blog {
   overflow: hidden;
 }
+.title-blog:hover {
+  color: rgb(81, 81, 227);
+}
 .blog-post img {
   max-width: 100%;
   height: auto;
@@ -46,14 +50,44 @@
 .link-blog:hover {
   color: rgb(50, 50, 195);
 }
-@media screen and (max-width: 768px) {
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+}
+.pagination a {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: 1px solid #3f78e0;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #171717;
+}
+.pagination span {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: 1px solid #3f78e0;
+  border-radius: 5px;
+  color: #3f78e0;
+}
+.pagination a:hover,
+.pagination span:hover {
+  background-color: #3f78e0;
+  color: #f2f2f2;
+}
+.pagination .current {
+  background-color: #3f78e0;
+  color: #f2f2f2;
+}
+@media screen and (max-width: 1300px) and (min-width: 794px) {
   .blog-post {
     flex: 0 0 calc(50% - 20px);
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 793px) {
   .blog-post {
     flex: 0 0 100%;
+    height: auto;
   }
 }
