@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/plugins.css">
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/style.css">
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/blog-style.css">
-
 </head>
 
 <body>
@@ -19,37 +18,32 @@
     </header>
 
     <main class="wrapper-posts pt-10 pb-14">
-
         <section class="row">
             <div class="col-lg-9 col-xl-8 col-xxl-7 mx-auto">
-                <h2 class="fs-15 text-uppercase text-primary text-center">NOSSAS NOTÍCIAS</h2>
-                <h1 class="display-4 mb-6 text-center">Aqui estão as últimas notícias da empresa em nosso blog que mais chamaram a atenção. </h1>
+                <h2 class="fs-15 text-uppercase text-primary text-center">NOTÍCIAS BUSCADAS</h2>
+                <h1 class="display-4 mb-6 text-center">Aqui estão as notícias que você pesquisou em nosso blog. </h1>
             </div>
-        </section>
-
-
-        <section class="container-search ">
-            <div><?php get_search_form(); ?></div>
-
         </section>
         <section class="blog-posts pt-10">
             <?php
-            //argumentos para consulta das páginas
-            $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+            $search_term = get_search_query(); // O termo de pesquisa
+            $category_id = isset($_GET['category']) ? $_GET['category'] : ''; // O ID da categoria selecionada
 
-            // Define os argumentos para a consulta
             $args = array(
+                's' => $search_term,
                 'post_type' => 'post',
                 'posts_per_page' => 12,
-                'paged' => $paged,
             );
 
-            // Faz a consulta
-            $blog_posts = new WP_Query($args);
+            if (!empty($category_id)) {
+                $args['category__in'] = array($category_id);
+            }
 
-            // Verifica se há posts para exibir
-            if ($blog_posts->have_posts()) :
-                while ($blog_posts->have_posts()) : $blog_posts->the_post();
+            $query = new WP_Query($args);
+
+            if ($query->have_posts()) {
+                while ($query->have_posts()) {
+                    $query->the_post();
             ?>
                     <article class="blog-post">
                         <a href="<?php the_permalink(); ?>">
@@ -60,7 +54,6 @@
                                 <?php the_post_thumbnail('post-thumbnail', array('class' => 'img-blog')); ?>
                             </a>
                         </div>
-
                         <div class="blog-content">
                             <p><?php the_excerpt(); ?></p>
                         </div>
@@ -75,32 +68,15 @@
                         <?php
                         }
                         ?>
-                        <div class="container-lead-more">
-                            <a class="lead-more" href="<?php echo get_permalink() ?>">Ler mais...</a>
+                        <div><a class="lead-more" href="<?php echo get_permalink() ?>">Ler mais...</a>
                         </div>
-
                     </article>
             <?php
-                endwhile;
-                // Restaura os dados do post original
-                wp_reset_postdata();
-            else :
-                _e('Desculpe, não há posts para exibir.');
-            endif;
-            ?>
-        </section>
-        <section class="pagination">
-            <?php
-            //Paginação
-            $numberBig = 999999999;
-            echo paginate_links(array(
-                'base' => str_replace($numberBig, '%#%', esc_url(get_pagenum_link($numberBig))),
-                'format' => '?paged=%#%',
-                'current' => max(1, get_query_var('paged')),
-                'total' => $blog_posts->max_num_pages,
-            ));
+                }
+            } else {
+                echo 'Nenhum post encontrado.';
+            }
 
-            //restaura os dados do post original
             wp_reset_postdata();
             ?>
         </section>

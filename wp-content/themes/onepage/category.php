@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php the_title(); ?></title>
+    <title>
+        <?php the_title() ?>
+    </title>
 
     <link rel="shortcut icon" href="<?php echo get_template_directory_uri(); ?>/assets/img/favicon.png">
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/plugins.css">
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/style.css">
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/blog-style.css">
-
 </head>
 
 <body>
@@ -23,16 +24,30 @@
         <section class="row">
             <div class="col-lg-9 col-xl-8 col-xxl-7 mx-auto">
                 <h2 class="fs-15 text-uppercase text-primary text-center">NOSSAS NOTÍCIAS</h2>
-                <h1 class="display-4 mb-6 text-center">Aqui estão as últimas notícias da empresa em nosso blog que mais chamaram a atenção. </h1>
+                <h1 class="display-4 mb-6 text-center">
+                    Aqui estão os últimos Blgos sobre <?php echo strtolower(single_cat_title('', false)); ?> da empresa que mais chamaram a atenção.
+                </h1>
             </div>
         </section>
 
+        <section class="category pt-10">
+            <h3 class="fs-15 text-uppercase text-primary>Categorias">Categorias</h3>
+            <section class="container-category">
+                <?php
 
-        <section class="container-search ">
-            <div><?php get_search_form(); ?></div>
+                $categories = get_categories();
+                $current_category = get_queried_object();
 
+                foreach ($categories as $category) {
+                    $class = ($category->term_id == $current_category->term_id) ? 'link-blog current-menu-item' : 'link-blog';
+                    echo '<a class="' . $class . '" href="' . get_category_link($category->term_id) . '">' . $category->name . '</a>';
+                }
+
+                ?>
+            </section>
         </section>
-        <section class="blog-posts pt-10">
+
+        <section class=" blog-posts pt-10">
             <?php
             //argumentos para consulta das páginas
             $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -42,6 +57,7 @@
                 'post_type' => 'post',
                 'posts_per_page' => 12,
                 'paged' => $paged,
+                'category_name' => single_cat_title('', false) // Adiciona este argumento para filtrar por categoria
             );
 
             // Faz a consulta
@@ -56,28 +72,19 @@
                             <h2 class="title-blog"><?php the_title(); ?></h2>
                         </a>
                         <div class="container-img-blog">
-                            <a href="<?php the_permalink();  ?>">
-                                <?php the_post_thumbnail('post-thumbnail', array('class' => 'img-blog')); ?>
-                            </a>
+                            <?php
+                            if (has_post_thumbnail()) {
+                                echo '<a href="' . get_permalink() . '">';
+                                the_post_thumbnail();
+                                echo '</a>';
+                            }
+                            ?>
+                        </div>
+                        <div class="blog-content">
+                            <?php the_excerpt(); ?>
                         </div>
 
-                        <div class="blog-content">
-                            <p><?php the_excerpt(); ?></p>
-                        </div>
-                        <?php
-                        $categories = get_the_category();
-                        if (!empty($categories)) {
-                            $category = $categories[0];
-                        ?>
-                            <div class="category-card <?php echo esc_attr($category->slug); ?>">
-                                <?php echo '<p>' . esc_html($category->name) . '</p>'; ?>
-                            </div>
-                        <?php
-                        }
-                        ?>
-                        <div class="container-lead-more">
-                            <a class="lead-more" href="<?php echo get_permalink() ?>">Ler mais...</a>
-                        </div>
+                        <a class="lead-more" href="<?php echo get_permalink() ?>">Ler mais...</a>
 
                     </article>
             <?php
