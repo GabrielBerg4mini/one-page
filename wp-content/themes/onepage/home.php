@@ -13,6 +13,13 @@
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/plugins.css">
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/style.css">
 </head>
+<style>
+    .accordion-wrapper .card {
+        box-shadow: none;
+        background: none;
+        margin-bottom: 0;
+    }
+</style>
 
 <body class="onepage">
     <div class="content-wrapper">
@@ -78,29 +85,36 @@
                     </div>
                     <!--/.row -->
                     <div class="row gx-lg-8 gx-xl-12 gy-6 gy-md-0 text-center">
-                        <div class="col-md-6 col-lg-3">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icons/lineal/megaphone.svg" class="svg-inject icon-svg icon-svg-md text-blue mb-3" alt="" />
-                            <h4>Marketing</h4>
-                            <p class="mb-2">Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo cum sociis natoque magnis.</p>
-                        </div>
-                        <!--/column -->
-                        <div class="col-md-6 col-lg-3">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icons/lineal/target.svg" class="svg-inject icon-svg icon-svg-md text-green mb-3" alt="" />
-                            <h4>Strategy</h4>
-                            <p class="mb-2">Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo cum sociis natoque magnis.</p>
-                        </div>
-                        <!--/column -->
-                        <div class="col-md-6 col-lg-3">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icons/lineal/settings-3.svg" class="svg-inject icon-svg icon-svg-md text-yellow mb-3" alt="" />
-                            <h4>Development</h4>
-                            <p class="mb-2">Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo cum sociis natoque magnis.</p>
-                        </div>
-                        <!--/column -->
-                        <div class="col-md-6 col-lg-3">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icons/lineal/bar-chart.svg" class="svg-inject icon-svg icon-svg-md text-orange mb-3" alt="" />
-                            <h4>Data Analysis</h4>
-                            <p class="mb-2">Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo cum sociis natoque magnis.</p>
-                        </div>
+                        <?php
+                        //argumentos para a consulta
+
+                        $args = array(
+                            'post_type' => 'acme_services',
+                        );
+                        // a consulta
+                        $the_query = new WP_Query($args);
+
+                        //lopp
+                        if ($the_query->have_posts()) {
+                            while ($the_query->have_posts()) {
+                                $the_query->the_post();
+                        ?>
+                                <div class="col-md-6 col-lg-3">
+                                    <?php
+                                    if (has_post_thumbnail()) {
+                                        the_post_thumbnail('full', array('class' => 'svg-inject icon-svg icon-svg-md mb-3'));
+                                    }
+                                    ?>
+                                    <h4><?php the_title(); ?></h4>
+                                    <p class="mb-2"><?php the_content(); ?></p>
+                                </div>
+                        <?php
+                            }
+                        } else {
+                            echo "<p>Nenhum post encontrado. </p>";
+                        }
+                        wp_reset_postdata();
+                        ?>
                         <!--/column -->
                     </div>
                     <!--/.row -->
@@ -162,57 +176,48 @@
                             <h3 class="display-5 mb-7">A few reasons why our valued customers choose us.</h3>
                             <div class="accordion accordion-wrapper" id="accordionExample">
                                 <div class="card plain accordion-item">
-                                    <div class="card-header" id="headingOne">
-                                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> Professional Design </button>
-                                    </div>
-                                    <!--/.card-header -->
-                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.</p>
-                                        </div>
-                                        <!--/.card-body -->
-                                    </div>
-                                    <!--/.accordion-collapse -->
+
+                                    <?php
+                                    $args = array(
+                                        'post_type' => 'acme_process',
+                                    );
+                                    $the_query = new WP_Query($args);
+                                    if ($the_query->have_posts()) {
+                                        $first_post = true; // Variável de controle para o primeiro post
+                                        while ($the_query->have_posts()) {
+                                            $the_query->the_post();
+                                    ?>
+                                            <div class="card">
+                                                <div class="card-header" id="heading<?php the_ID(); ?>">
+                                                    <button class="accordion-button <?php if ($first_post) echo 'active-title'; ?>" data-bs-toggle="collapse" data-bs-target="#collapse<?php the_ID(); ?>" aria-expanded="true" aria-controls="collapse<?php the_ID(); ?>">
+                                                        <?php the_title(); ?>
+                                                    </button>
+                                                </div>
+                                                <div id="collapse<?php the_ID(); ?>" class="accordion-collapse collapse <?php if ($first_post) echo 'show'; ?>" aria-labelledby="heading<?php the_ID(); ?>" data-bs-parent="#accordionExample">
+                                                    <div class="card-body">
+                                                        <?php the_content(); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    <?php
+                                            $first_post = false; // Depois do primeiro post, definimos a variável como false
+                                        }
+                                    } else {
+                                        echo "<p>Nenhum post encontrado. </p>";
+                                    }
+                                    wp_reset_postdata();
+                                    ?>
+                                    <!--/.accordion-item -->
                                 </div>
-                                <!--/.accordion-item -->
-                                <div class="card plain accordion-item">
-                                    <div class="card-header" id="headingTwo">
-                                        <button class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> Top-Notch Support </button>
-                                    </div>
-                                    <!--/.card-header -->
-                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.</p>
-                                        </div>
-                                        <!--/.card-body -->
-                                    </div>
-                                    <!--/.accordion-collapse -->
-                                </div>
-                                <!--/.accordion-item -->
-                                <div class="card plain accordion-item">
-                                    <div class="card-header" id="headingThree">
-                                        <button class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> Header and Slider Options </button>
-                                    </div>
-                                    <!--/.card-header -->
-                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.</p>
-                                        </div>
-                                        <!--/.card-body -->
-                                    </div>
-                                    <!--/.accordion-collapse -->
-                                </div>
-                                <!--/.accordion-item -->
+                                <!--/.accordion -->
                             </div>
-                            <!--/.accordion -->
+                            <!--/column -->
                         </div>
-                        <!--/column -->
+                        <!--/.row -->
                     </div>
-                    <!--/.row -->
+                    <!-- /.container -->
                 </div>
-                <!-- /.container -->
-            </div>
-            <!-- /.wrapper -->
+                <!-- /.wrapper -->
         </section>
         <!-- /section -->
         <section id="about">
