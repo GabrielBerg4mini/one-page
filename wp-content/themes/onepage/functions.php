@@ -111,6 +111,78 @@ function create_post_type()
             'menu_icon' => 'dashicons-schedule',
         )
     );
+
+    register_post_type(
+        'acme_depoimentos',
+        array(
+            'labels' => array(
+                'name' => __('Testimonials'),
+                'singular_name' => __('Depoimento'),
+                'add_new' => __('Adicionar Novo Depoimento'),
+                'add_new_item' => __('Adicionar Novo Depoimento'),
+                'edit_item' => __('Editar Depoimento'),
+                'new_item' => __('Novo Depoimento'),
+                'view_item' => __('Ver Depoimento'),
+                'view_items' => __('Ver Depoimentos'),
+                'search_items' => __('Buscar Depoimentos'),
+                'not_found' => __('Nenhum depoimento encontrado'),
+                'not_found_in_trash' => __('Nenhum depoimento encontrado na lixeira'),
+                'all_items' => __('Todos os Depoimentos'),
+                'archives' => __('Arquivos de Depoimentos'),
+                'attributes' => __('Atributos de Depoimentos'),
+                'insert_into_item' => __('Inserir no depoimento'),
+                'uploaded_to_this_item' => __('Enviado para este depoimento'),
+            ),
+            'public' => true,
+            'has_archive' => true,
+            'description' => 'Post para Depoimentos',
+            'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
+            'taxonomies' => array('category', 'post_tag'),
+            'menu_icon' => 'dashicons-format-quote',
+        )
+    );
 }
 add_theme_support('post-thumbnails', array('acme_services'));
 add_action('init', 'create_post_type');
+
+
+function acme_add_meta_box()
+{
+    add_meta_box(
+        'acme_meta_box',
+        'Informações Adicionais',
+        'acme_meta_box_callback',
+        'acme_depoimentos',
+    );
+}
+add_action('add_meta_boxes', 'acme_add_meta_box');
+
+function acme_meta_box_callback($post)
+{
+    $author_name = get_post_meta($post->ID, '_acme_author_name_key', true);
+    $author_position = get_post_meta($post->ID, '_acme_author_position_key', true);
+    echo '<label for="acme_author_name">Nome do Autor</label>';
+    echo '<input type="text" id="acme_author_name" name="acme_author_name" value="' . esc_attr($author_name) . '"/>';
+    echo '<label for="acme_author_position">Cargo do Autor</label>';
+    echo '<input type="text" id="acme_author_position" name="acme_author_position" value="' . esc_attr($author_position) . '"/>';
+}
+
+function acme_save_meta_box_data($post_id)
+{
+    if (array_key_exists('acme_author_name', $_POST)) {
+        update_post_meta(
+            $post_id,
+            '_acme_author_name_key',
+            $_POST['acme_author_name']
+        );
+    }
+    if (array_key_exists('acme_author_position', $_POST)) {
+        update_post_meta(
+            $post_id,
+            '_acme_author_position_key',
+            $_POST['acme_author_position']
+        );
+    }
+}
+
+add_action('save_post', 'acme_save_meta_box_data');

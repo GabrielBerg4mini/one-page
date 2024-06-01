@@ -183,13 +183,13 @@
                                     );
                                     $the_query = new WP_Query($args);
                                     if ($the_query->have_posts()) {
-                                        $first_post = true; // Variável de controle para o primeiro post
+                                        $first_post = true;
                                         while ($the_query->have_posts()) {
                                             $the_query->the_post();
                                     ?>
                                             <div class="card">
                                                 <div class="card-header" id="heading<?php the_ID(); ?>">
-                                                    <button class="accordion-button <?php if ($first_post) echo 'active-title'; ?>" data-bs-toggle="collapse" data-bs-target="#collapse<?php the_ID(); ?>" aria-expanded="true" aria-controls="collapse<?php the_ID(); ?>">
+                                                    <button class="accordion-button  <?php if ($first_post) echo 'active-title' ?>" data-bs-toggle="collapse" data-bs-target="#collapse<?php the_ID(); ?>" aria-expanded="true" aria-controls="collapse<?php the_ID(); ?>">
                                                         <?php the_title(); ?>
                                                     </button>
                                                 </div>
@@ -200,7 +200,7 @@
                                                 </div>
                                             </div>
                                     <?php
-                                            $first_post = false; // Depois do primeiro post, definimos a variável como false
+                                            $first_post = false;
                                         }
                                     } else {
                                         echo "<p>Nenhum post encontrado. </p>";
@@ -328,136 +328,127 @@
                             <div class="swiper-container dots-closer mb-6" data-margin="30" data-dots="true">
                                 <div class="swiper">
                                     <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <blockquote class="icon icon-top fs-lg text-center">
-                                                <p>“Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum ligula porta felis euismod semper. Cras justo odio consectetur.”</p>
-                                                <div class="blockquote-details justify-content-center text-center">
-                                                    <div class="info ps-0">
-                                                        <h5 class="mb-1">Coriss Ambady</h5>
-                                                        <p class="mb-0">Financial Analyst</p>
-                                                    </div>
+                                        <?php
+                                        $args = array(
+                                            'post_type' => 'acme_depoimentos'
+                                        );
+                                        $the_query = new WP_Query($args);
+
+                                        if ($the_query->have_posts()) {
+                                            while ($the_query->have_posts()) {
+                                                $the_query->the_post();
+                                        ?>
+                                                <div class="swiper-slide">
+                                                    <blockquote class="icon icon-top fs-lg text-center">
+                                                        <p><?php the_content(); ?></p>
+                                                        <div class="blockquote-details justify-content-center text-center">
+                                                            <div class="info ps-0">
+                                                                <h5 class="mb-1"><?php echo get_post_meta(get_the_ID(), '_acme_author_name_key', true); ?></h5>
+                                                                <p class="mb-0"><?php echo get_post_meta(get_the_ID(), '_acme_author_position_key', true); ?></p>
+                                                            </div>
+                                                        </div>
+                                                    </blockquote>
                                                 </div>
-                                            </blockquote>
-                                        </div>
-                                        <!--/.swiper-slide -->
-                                        <div class="swiper-slide">
-                                            <blockquote class="icon icon-top fs-lg text-center">
-                                                <p>“Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum ligula porta felis euismod semper. Cras justo odio consectetur.”</p>
-                                                <div class="blockquote-details justify-content-center text-center">
-                                                    <div class="info ps-0">
-                                                        <h5 class="mb-1">Cory Zamora</h5>
-                                                        <p class="mb-0">Marketing Specialist</p>
-                                                    </div>
-                                                </div>
-                                            </blockquote>
-                                        </div>
-                                        <!--/.swiper-slide -->
-                                        <div class="swiper-slide">
-                                            <blockquote class="icon icon-top fs-lg text-center">
-                                                <p>“Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum ligula porta felis euismod semper. Cras justo odio consectetur.”</p>
-                                                <div class="blockquote-details justify-content-center text-center">
-                                                    <div class="info ps-0">
-                                                        <h5 class="mb-1">Nikolas Brooten</h5>
-                                                        <p class="mb-0">Sales Manager</p>
-                                                    </div>
-                                                </div>
-                                            </blockquote>
-                                        </div>
-                                        <!--/.swiper-slide -->
+                                        <?php
+                                            }
+                                        }
+                                        ?>
                                     </div>
-                                    <!--/.swiper-wrapper -->
+                                    <!--/.swiper-slide -->
                                 </div>
-                                <!-- /.swiper -->
+                                <!--/.swiper-wrapper -->
                             </div>
-                            <!-- /.swiper-container -->
+                            <!-- /.swiper -->
                         </div>
-                        <!--/column -->
+                        <!-- /.swiper-container -->
                     </div>
-                    <!--/.row -->
-                    <div class="px-lg-5">
-                        <div class="row gx-0 gx-md-8 gx-xl-12 gy-8 align-items-center">
-                            <div class="col-4 col-md-2">
-                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c1.png" alt="" /></figure>
-                            </div>
-                            <!--/column -->
-                            <div class="col-4 col-md-2">
-                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c2.png" alt="" /></figure>
-                            </div>
-                            <!--/column -->
-                            <div class="col-4 col-md-2">
-                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c3.png" alt="" /></figure>
-                            </div>
-                            <!--/column -->
-                            <div class="col-4 col-md-2">
-                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c4.png" alt="" /></figure>
-                            </div>
-                            <!--/column -->
-                            <div class="col-4 col-md-2">
-                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c5.png" alt="" /></figure>
-                            </div>
-                            <!--/column -->
-                            <div class="col-4 col-md-2">
-                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c6.png" alt="" /></figure>
-                            </div>
-                            <!--/column -->
-                        </div>
-                        <!--/.row -->
-                    </div>
-                    <!-- /div -->
+                    <!--/column -->
                 </div>
-                <!-- /.container -->
-            </div>
-            <!-- /.wrapper -->
-        </section>
-        <!-- /section -->
-        <section id="contact">
-            <div class="wrapper bg-light">
-                <div class="container py-14 py-md-17">
-                    <div class="row gx-lg-8 gx-xl-12 gy-10 align-items-center">
-                        <div class="col-lg-7">
-                            <figure><img class="w-auto" src="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i5.png" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i5@2x.png 2x" alt="" /></figure>
+                <!--/.row -->
+                <div class="px-lg-5">
+                    <div class="row gx-0 gx-md-8 gx-xl-12 gy-8 align-items-center">
+                        <div class="col-4 col-md-2">
+                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c1.png" alt="" /></figure>
                         </div>
                         <!--/column -->
-                        <div class="col-lg-5">
-                            <h2 class="fs-15 text-uppercase text-line text-primary text-center mb-3">Get In Touch</h2>
-                            <h3 class="display-5 mb-7">Got any questions? Don't hesitate to get in touch.</h3>
-                            <div class="d-flex flex-row">
-                                <div>
-                                    <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-location-pin-alt"></i> </div>
-                                </div>
-                                <div>
-                                    <h5 class="mb-1">Address</h5>
-                                    <address>Moonshine St. 14/05 Light City, London</address>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <div>
-                                    <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-phone-volume"></i> </div>
-                                </div>
-                                <div>
-                                    <h5 class="mb-1">Phone</h5>
-                                    <p>00 (123) 456 78 90</p>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <div>
-                                    <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-envelope"></i> </div>
-                                </div>
-                                <div>
-                                    <h5 class="mb-1">E-mail</h5>
-                                    <p class="mb-0"><a href="mailto:sandbox@email.com" class="link-body">sandbox@email.com</a></p>
-                                </div>
-                            </div>
+                        <div class="col-4 col-md-2">
+                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c2.png" alt="" /></figure>
+                        </div>
+                        <!--/column -->
+                        <div class="col-4 col-md-2">
+                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c3.png" alt="" /></figure>
+                        </div>
+                        <!--/column -->
+                        <div class="col-4 col-md-2">
+                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c4.png" alt="" /></figure>
+                        </div>
+                        <!--/column -->
+                        <div class="col-4 col-md-2">
+                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c5.png" alt="" /></figure>
+                        </div>
+                        <!--/column -->
+                        <div class="col-4 col-md-2">
+                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c6.png" alt="" /></figure>
                         </div>
                         <!--/column -->
                     </div>
                     <!--/.row -->
                 </div>
-                <!-- /.container -->
+                <!-- /div -->
             </div>
-            <!-- /.wrapper -->
-        </section>
-        <!-- /section -->
+            <!-- /.container -->
+    </div>
+    <!-- /.wrapper -->
+    </section>
+    <!-- /section -->
+    <section id="contact">
+        <div class="wrapper bg-light">
+            <div class="container py-14 py-md-17">
+                <div class="row gx-lg-8 gx-xl-12 gy-10 align-items-center">
+                    <div class="col-lg-7">
+                        <figure><img class="w-auto" src="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i5.png" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i5@2x.png 2x" alt="" /></figure>
+                    </div>
+                    <!--/column -->
+                    <div class="col-lg-5">
+                        <h2 class="fs-15 text-uppercase text-line text-primary text-center mb-3">Get In Touch</h2>
+                        <h3 class="display-5 mb-7">Got any questions? Don't hesitate to get in touch.</h3>
+                        <div class="d-flex flex-row">
+                            <div>
+                                <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-location-pin-alt"></i> </div>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Address</h5>
+                                <address>Moonshine St. 14/05 Light City, London</address>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div>
+                                <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-phone-volume"></i> </div>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Phone</h5>
+                                <p>00 (123) 456 78 90</p>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div>
+                                <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-envelope"></i> </div>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">E-mail</h5>
+                                <p class="mb-0"><a href="mailto:sandbox@email.com" class="link-body">sandbox@email.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/column -->
+                </div>
+                <!--/.row -->
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /.wrapper -->
+    </section>
+    <!-- /section -->
     </div>
     <!-- /.content-wrapper -->
     <footer class="bg-dark text-inverse">
