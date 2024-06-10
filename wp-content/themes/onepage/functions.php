@@ -5,11 +5,24 @@ function theme_enqueue_styles()
     wp_enqueue_style('main-css', get_template_directory_uri() . '/assets/css/style.css', array(), '1.0', 'all');
     wp_enqueue_style('plugin-css', get_template_directory_uri() . '/assets/css/plugins.css', array(), '1.0', 'all');
 
+
     wp_enqueue_script('main-js', get_template_directory_uri() . '/assets/js/theme.js', array('jquery'), '1.0', true);
     wp_enqueue_script('plugin-js', get_template_directory_uri() . '/assets/js/plugins.js', array('jquery'), '1.0' . true);
+
+    //estilo gutenberg
+    wp_enqueue_style('wp-block-library');
 }
 
 add_action('wp_enqueue_scripts', 'theme_enqueue_styles');
+//gutenberg
+function mytheme_setup()
+{
+    add_theme_support('editor-styles');
+    add_theme_support('wp-block-styles');
+    add_editor_style('style-editor.css');
+}
+add_action('after_setup_theme', 'mytheme_setup');
+// !final gutenberg
 
 //adiciona suporte para menus
 function theme_setup()

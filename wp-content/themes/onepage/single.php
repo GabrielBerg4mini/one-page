@@ -13,9 +13,9 @@
 </head>
 
 <body>
-    <header class="wrapper bg-gray">
-        <?php get_header(); ?>
-    </header>
+
+    <?php get_header(); ?>
+
 
     <main class="container pt-10 pb-14">
         <?php
@@ -33,9 +33,9 @@
         endif; ?>
     </main>
 
-    <footer class="bg-dark text-inverse">
-        <?php get_footer(); ?>
-    </footer>
+
+    <?php get_footer(); ?>
+
     <script src="<?php echo get_template_directory_uri(); ?>/assets/js/plugins.js"></script>
     <script src="<?php echo get_template_directory_uri(); ?>/assets/js/theme.js"></script>
 </body>

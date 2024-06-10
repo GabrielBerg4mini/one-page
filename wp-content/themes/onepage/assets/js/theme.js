@@ -45,6 +45,7 @@ var theme = {
   stickyHeader: () => {
     var navbar = document.querySelector(".navbar");
     if (navbar == null) return;
+
     var options = {
       offset: 350,
       offsetSide: "top",
@@ -64,10 +65,18 @@ var theme = {
             "navbar-light"
           );
         }
+        // Ajustando a posição do sticky header
+        this.clonedElem.style.top = "1.6rem"; // Ajuste este valor conforme necessário
+      },
+      onUnstick: function () {
+        // Resetar a posição quando o header não está sticky
+        this.clonedElem.style.top = "0px";
       },
     };
+
     var banner = new Headhesive(".navbar", options);
   },
+
   /**
    * Sub Menus
    * Enables multilevel dropdown

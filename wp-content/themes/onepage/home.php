@@ -1,88 +1,54 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An impressive and flawless site template that includes various UI elements and countless features, attractive ready-made blocks and rich pages, basically everything you need to create a unique and professional website.">
-    <meta name="keywords" content="bootstrap 5, business, corporate, creative, gulp, marketing, minimal, modern, multipurpose, one page, responsive, saas, sass, seo, startup, html5 template, site template">
-    <meta name="author" content="elemis">
-    <title>One Page</title>
-
-    <link rel="shortcut icon" href="<?php echo get_template_directory_uri(); ?>/assets/img/favicon.png">
-    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/plugins.css">
-    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/style.css">
-</head>
-<style>
-    .accordion-wrapper .card {
-        box-shadow: none;
-        background: none;
-        margin-bottom: 0;
-    }
-</style>
-
-<body class="onepage">
+<?php
+get_header(); ?>
+<main>
     <div class="content-wrapper">
-        <header class="wrapper bg-gray">
-            <?php get_header(); ?>
-        </header>
-        <!-- /header -->
-        <section id="home">
-            <div class="wrapper bg-gray">
-                <div class="container pt-10 pt-md-14 pb-14 pb-md-17 text-center">
-                    <div class="row text-center">
-                        <div class="col-lg-9 col-xxl-7 mx-auto" data-cues="zoomIn" data-group="welcome" data-interval="-200">
-                            <h2 class="display-1 mb-4">Creative. Smart. Awesome.</h2>
-                            <p class="lead fs-24 lh-sm px-md-5 px-xl-15 px-xxl-10">We are an award winning web & mobile design agency that strongly believes in the power of creative ideas.</p>
+        <?php
+        $page = get_post(269);
+        if ($page) {
+            global $post;
+            $post = $page;
+            setup_postdata($post);
+        ?>
+            <section id="home">
+                <div class="wrapper bg-gray">
+                    <div class="container pt-10 pt-md-14 pb-14 pb-md-17 text-center">
+                        <div class="row text-center">
+                            <div class="col-lg-9 col-xxl-7 mx-auto" data-cues="zoomIn" data-group="welcome" data-interval="-200">
+                                <h2 class="display-1 mb-4"><?php the_title(); ?></h2>
+                                <p class="lead fs-24 lh-sm px-md-5 px-xl-15 px-xxl-10"><?php the_content(); ?></p>
+                            </div>
+                            <!-- /column -->
                         </div>
-                        <!-- /column -->
-                    </div>
-                    <!-- /.row -->
-                    <div class="row text-center mt-10">
-                        <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-                            <figure><img class="w-auto" src="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i8.png" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i8@2x.png 2x" alt="" /></figure>
+                        <!-- /.row -->
+                        <div class="row text-center mt-10">
+                            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+                                <figure> <?php the_post_thumbnail('full', ['class' => 'w-auto']); ?></figure>
+                            </div>
+                            <!-- /column -->
                         </div>
-                        <!-- /column -->
+                        <!-- /.row -->
                     </div>
-                    <!-- /.row -->
+                    <!-- /.container -->
                 </div>
-                <!-- /.container -->
-            </div>
-            <!-- /.wrapper -->
-        </section>
+                <!-- /.wrapper -->
+            </section>
+        <?php
+            wp_reset_postdata();
+        }
+        ?>
         <!-- /section -->
         <section id="services">
             <div class="wrapper bg-light">
                 <div class="container py-14 py-md-17">
-                    <div class="row gx-lg-8 gx-xl-12 gy-6 mb-10 align-items-center">
-                        <div class="col-lg-6 order-lg-2">
-                            <ul class="progress-list">
-                                <li>
-                                    <p>Marketing</p>
-                                    <div class="progressbar line blue" data-value="100"></div>
-                                </li>
-                                <li>
-                                    <p>Strategy</p>
-                                    <div class="progressbar line green" data-value="80"></div>
-                                </li>
-                                <li>
-                                    <p>Development</p>
-                                    <div class="progressbar line yellow" data-value="85"></div>
-                                </li>
-                                <li>
-                                    <p>Data Analysis</p>
-                                    <div class="progressbar line orange" data-value="90"></div>
-                                </li>
-                            </ul>
-                            <!-- /.progress-list -->
-                        </div>
-                        <!--/column -->
-                        <div class="col-lg-6">
-                            <h3 class="display-5 mb-5">The full service we are offering is specifically designed to meet your business needs and projects.</h3>
-                            <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur duis mollis commodo.</p>
-                        </div>
-                        <!--/column -->
-                    </div>
+
+                    <?php
+                    $page = get_post(292);
+                    if ($page) {
+                        echo apply_filters('the_content', $page->post_content);
+                    }
+                    ?>
+
+
                     <!--/.row -->
                     <div class="row gx-lg-8 gx-xl-12 gy-6 gy-md-0 text-center">
                         <?php
@@ -128,41 +94,12 @@
             <div class="wrapper bg-gray">
                 <div class="container py-14 py-md-17">
                     <div class="row gx-lg-8 gx-xl-12 gy-10 mb-14 mb-md-16 align-items-center">
-                        <div class="col-lg-7">
-                            <figure><img class="w-auto" src="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i3.png" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i3@2x.png 2x" alt="" /></figure>
-                        </div>
-                        <!--/column -->
-                        <div class="col-lg-5">
-                            <h2 class="fs-15 text-uppercase text-line text-primary mb-3">How It Works?</h2>
-                            <h3 class="display-5 mb-7 pe-xxl-5">Everything you need on creating a business process.</h3>
-                            <div class="d-flex flex-row mb-4">
-                                <div>
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icons/lineal/light-bulb.svg" class="svg-inject icon-svg icon-svg-sm text-blue me-4" alt="" />
-                                </div>
-                                <div>
-                                    <h4 class="mb-1">Collect Ideas</h4>
-                                    <p class="mb-1">Nulla vitae elit libero pharetra augue dapibus.</p>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-row mb-4">
-                                <div>
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icons/lineal/pie-chart-2.svg" class="svg-inject icon-svg icon-svg-sm text-green me-4" alt="" />
-                                </div>
-                                <div>
-                                    <h4 class="mb-1">Data Analysis</h4>
-                                    <p class="mb-1">Vivamus sagittis lacus augue laoreet vel.</p>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <div>
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icons/lineal/design.svg" class="svg-inject icon-svg icon-svg-sm text-yellow me-4" alt="" />
-                                </div>
-                                <div>
-                                    <h4 class="mb-1">Magic Touch</h4>
-                                    <p class="mb-0">Cras mattis consectetur purus sit amet.</p>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                        $page = get_post(311);
+                        if ($page) {
+                            echo apply_filters('the_content', $page->post_content);
+                        }
+                        ?>
                         <!--/column -->
                     </div>
                     <!--/.row -->
@@ -351,116 +288,113 @@
                                                 </div>
                                         <?php
                                             }
+                                            wp_reset_postdata();
+                                        } else {
+                                            echo '<p>Nenhum post encontrado.</p>';
                                         }
                                         ?>
                                     </div>
-                                    <!--/.swiper-slide -->
+                                    <!--/.swiper-wrapper -->
                                 </div>
-                                <!--/.swiper-wrapper -->
+                                <!--/.swiper -->
                             </div>
-                            <!-- /.swiper -->
+                            <!--/.swiper-container -->
                         </div>
-                        <!-- /.swiper-container -->
+                        <!--/column -->
                     </div>
-                    <!--/column -->
+                    <!--/.row -->
+                    <div class="px-lg-5">
+                        <div class="row gx-0 gx-md-8 gx-xl-12 gy-8 align-items-center">
+                            <div class="col-4 col-md-2">
+                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c1.png" alt="" /></figure>
+                            </div>
+                            <!--/column -->
+                            <div class="col-4 col-md-2">
+                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c2.png" alt="" /></figure>
+                            </div>
+                            <!--/column -->
+                            <div class="col-4 col-md-2">
+                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c3.png" alt="" /></figure>
+                            </div>
+                            <!--/column -->
+                            <div class="col-4 col-md-2">
+                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c4.png" alt="" /></figure>
+                            </div>
+                            <!--/column -->
+                            <div class="col-4 col-md-2">
+                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c5.png" alt="" /></figure>
+                            </div>
+                            <!--/column -->
+                            <div class="col-4 col-md-2">
+                                <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c6.png" alt="" /></figure>
+                            </div>
+                            <!--/column -->
+                        </div>
+                        <!--/.row -->
+                    </div>
                 </div>
-                <!--/.row -->
-                <div class="px-lg-5">
-                    <div class="row gx-0 gx-md-8 gx-xl-12 gy-8 align-items-center">
-                        <div class="col-4 col-md-2">
-                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c1.png" alt="" /></figure>
+                <!--/.container -->
+
+                <!-- /.px-lg-5 -->
+            </div>
+            <!-- /.wrapper -->
+        </section>
+
+        <!-- /section -->
+        <section id="contact">
+            <div class="wrapper bg-light">
+                <div class="container py-14 py-md-17">
+                    <div class="row gx-lg-8 gx-xl-12 gy-10 align-items-center">
+                        <div class="col-lg-7">
+                            <figure><img class="w-auto" src="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i5.png" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i5@2x.png 2x" alt="" /></figure>
                         </div>
                         <!--/column -->
-                        <div class="col-4 col-md-2">
-                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c2.png" alt="" /></figure>
-                        </div>
-                        <!--/column -->
-                        <div class="col-4 col-md-2">
-                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c3.png" alt="" /></figure>
-                        </div>
-                        <!--/column -->
-                        <div class="col-4 col-md-2">
-                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c4.png" alt="" /></figure>
-                        </div>
-                        <!--/column -->
-                        <div class="col-4 col-md-2">
-                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c5.png" alt="" /></figure>
-                        </div>
-                        <!--/column -->
-                        <div class="col-4 col-md-2">
-                            <figure class="px-5 px-md-0 px-lg-2 px-xl-3 px-xxl-4"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/brands/c6.png" alt="" /></figure>
+                        <div class="col-lg-5">
+                            <h2 class="fs-15 text-uppercase text-line text-primary text-center mb-3">Get In Touch</h2>
+                            <h3 class="display-5 mb-7">Got any questions? Don't hesitate to get in touch.</h3>
+                            <div class="d-flex flex-row">
+                                <div>
+                                    <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-location-pin-alt"></i> </div>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">Address</h5>
+                                    <address>Moonshine St. 14/05 Light City, London</address>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div>
+                                    <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-phone-volume"></i> </div>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">Phone</h5>
+                                    <p>00 (123) 456 78 90</p>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div>
+                                    <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-envelope"></i> </div>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">E-mail</h5>
+                                    <p class="mb-0"><a href="mailto:sandbox@email.com" class="link-body">sandbox@email.com</a></p>
+                                </div>
+                            </div>
                         </div>
                         <!--/column -->
                     </div>
                     <!--/.row -->
                 </div>
-                <!-- /div -->
+                <!-- /.container -->
             </div>
-            <!-- /.container -->
-    </div>
-    <!-- /.wrapper -->
-    </section>
-    <!-- /section -->
-    <section id="contact">
-        <div class="wrapper bg-light">
-            <div class="container py-14 py-md-17">
-                <div class="row gx-lg-8 gx-xl-12 gy-10 align-items-center">
-                    <div class="col-lg-7">
-                        <figure><img class="w-auto" src="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i5.png" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/illustrations/i5@2x.png 2x" alt="" /></figure>
-                    </div>
-                    <!--/column -->
-                    <div class="col-lg-5">
-                        <h2 class="fs-15 text-uppercase text-line text-primary text-center mb-3">Get In Touch</h2>
-                        <h3 class="display-5 mb-7">Got any questions? Don't hesitate to get in touch.</h3>
-                        <div class="d-flex flex-row">
-                            <div>
-                                <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-location-pin-alt"></i> </div>
-                            </div>
-                            <div>
-                                <h5 class="mb-1">Address</h5>
-                                <address>Moonshine St. 14/05 Light City, London</address>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row">
-                            <div>
-                                <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-phone-volume"></i> </div>
-                            </div>
-                            <div>
-                                <h5 class="mb-1">Phone</h5>
-                                <p>00 (123) 456 78 90</p>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row">
-                            <div>
-                                <div class="icon text-primary fs-28 me-4 mt-n1"> <i class="uil uil-envelope"></i> </div>
-                            </div>
-                            <div>
-                                <h5 class="mb-1">E-mail</h5>
-                                <p class="mb-0"><a href="mailto:sandbox@email.com" class="link-body">sandbox@email.com</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <!--/column -->
-                </div>
-                <!--/.row -->
-            </div>
-            <!-- /.container -->
-        </div>
-        <!-- /.wrapper -->
-    </section>
-    <!-- /section -->
+            <!-- /.wrapper -->
+        </section>
+        <!-- /section -->
     </div>
     <!-- /.content-wrapper -->
-    <footer class="bg-dark text-inverse">
-        <?php get_footer(); ?>
-    </footer>
     <div class="progress-wrap">
         <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
             <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
     </div>
-    <script src="<?php echo get_template_directory_uri(); ?>/assets/js/plugins.js"></script>
-    <script src="<?php echo get_template_directory_uri(); ?>/assets/js/theme.js"></script>
-</body>
-
-</html>
+</main>
+<?php get_footer(); ?>
