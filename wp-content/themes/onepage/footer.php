@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footer</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
@@ -15,13 +17,34 @@
                     <div class="widget">
                         <img class="mb-4" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-light.png" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/logo-light@2x.png 2x" alt="" />
                         <p class="mb-4">© 2023 Sandbox. <br class="d-none d-lg-block" />All rights reserved.</p>
+
                         <nav class="nav social social-white">
-                            <a href="#"><i class="uil uil-twitter"></i></a>
-                            <a href="#"><i class="uil uil-facebook-f"></i></a>
-                            <a href="#"><i class="uil uil-dribbble"></i></a>
-                            <a href="#"><i class="uil uil-instagram"></i></a>
-                            <a href="#"><i class="uil uil-youtube"></i></a>
+                            <?php
+                            $social_options = get_option('acme_social_options', array());
+
+                            if (!empty($social_options)) {
+                                echo '<div class="nav social social-white">';
+                                if (isset($social_options['acme_social_twitter']) && !empty($social_options['acme_social_twitter'])) {
+                                    echo '<a target="_blank" href="' . esc_url($social_options['acme_social_twitter']) . '"><i class="fab fa-twitter"></i></a>';
+                                }
+                                if (isset($social_options['acme_social_facebook']) && !empty($social_options['acme_social_facebook'])) {
+                                    echo '<a target="_blank" href="' . esc_url($social_options['acme_social_facebook']) . '"><i class="fab fa-facebook-f"></i></a>';
+                                }
+                                if (isset($social_options['acme_social_dribbble']) && !empty($social_options['acme_social_dribbble'])) {
+                                    echo '<a target="_blank" href="' . esc_url($social_options['acme_social_dribbble']) . '"><i class="fab fa-dribbble"></i></a>';
+                                }
+                                if (isset($social_options['acme_social_instagram']) && !empty($social_options['acme_social_instagram'])) {
+                                    echo '<a target="_blank" href="' . esc_url($social_options['acme_social_instagram']) . '"><i class="fab fa-instagram"></i></a>';
+                                }
+                                if (isset($social_options['acme_social_youtube']) && !empty($social_options['acme_social_youtube'])) {
+                                    echo '<a target="_blank" href="' . esc_url($social_options['acme_social_youtube']) . '"><i class="fab fa-youtube"></i></a>';
+                                }
+                                echo '</div>';
+                            }
+                            ?>
+
                         </nav>
+
                         <!-- /.social -->
                     </div>
                     <!-- /.widget -->

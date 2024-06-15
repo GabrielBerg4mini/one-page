@@ -199,3 +199,122 @@ function acme_save_meta_box_data($post_id)
 }
 
 add_action('save_post', 'acme_save_meta_box_data');
+
+// páginas de configuração 
+
+add_action('admin_menu', 'acme_social_options_page');
+
+function acme_social_options_page()
+{
+    add_options_page(
+        'Rede Social',
+        'Rede Social',
+        'manage_options',
+        'social-links',
+        'acme_social_options_page_html'
+    );
+}
+
+add_action('admin_init', 'acme_social_options_init');
+
+function acme_social_options_field_html($args)
+{
+    $options = get_option('acme_social_options', array());
+    $value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '';
+?>
+    <input type="text" id="<?php echo esc_attr($args['label_for']); ?>" name="acme_social_options[<?php echo esc_attr($args['label_for']); ?>]" value="<?php echo esc_attr($value); ?>">
+<?php
+}
+
+function acme_social_options_init()
+{
+    register_setting('acme_social_options', 'acme_social_options', 'acme_validate_options');
+
+    add_settings_section(
+        'acme_social_options_section',
+        'Rede Social',
+        'acme_social_options_section_callback',
+        'acme_social_options'
+    );
+
+    add_settings_field(
+        'acme_social_twitter',
+        'Twitter',
+        'acme_social_options_field_html',
+        'acme_social_options',
+        'acme_social_options_section',
+        ['label_for' => 'acme_social_twitter']
+    );
+
+    add_settings_field(
+        'acme_social_facebook',
+        'Facebook',
+        'acme_social_options_field_html',
+        'acme_social_options',
+        'acme_social_options_section',
+        ['label_for' => 'acme_social_facebook']
+    );
+
+    add_settings_field(
+        'acme_social_dribbble',
+        'Dribbble',
+        'acme_social_options_field_html',
+        'acme_social_options',
+        'acme_social_options_section',
+        ['label_for' => 'acme_social_dribbble']
+    );
+
+    add_settings_field(
+        'acme_social_instagram',
+        'Instagram',
+        'acme_social_options_field_html',
+        'acme_social_options',
+        'acme_social_options_section',
+        ['label_for' => 'acme_social_instagram']
+    );
+
+    add_settings_field(
+        'acme_social_youtube',
+        'YouTube',
+        'acme_social_options_field_html',
+        'acme_social_options',
+        'acme_social_options_section',
+        ['label_for' => 'acme_social_youtube']
+    );
+}
+
+function acme_social_options_page_html()
+{
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields('acme_social_options');
+            do_settings_sections('acme_social_options');
+            submit_button('Salvar Alterações');
+            ?>
+        </form>
+    </div>
+<?php
+}
+
+function acme_validate_options($input)
+{
+    $output = [];
+    foreach ($input as $key => $value) {
+        $output[$key] = esc_url_raw($value);
+    }
+
+    add_settings_error('acme_social_options', 'acme_social_options_message', 'Configurações salvas com sucesso!', 'updated');
+
+    return $output;
+}
+
+function acme_social_options_section_callback()
+{
+    echo '<p>Insira os links para suas redes sociais.</p>';
+}

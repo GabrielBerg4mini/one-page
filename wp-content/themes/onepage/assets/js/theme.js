@@ -65,12 +65,6 @@ var theme = {
             "navbar-light"
           );
         }
-        // Ajustando a posição do sticky header
-        this.clonedElem.style.top = "1.6rem"; // Ajuste este valor conforme necessário
-      },
-      onUnstick: function () {
-        // Resetar a posição quando o header não está sticky
-        this.clonedElem.style.top = "0px";
       },
     };
 
