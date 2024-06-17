@@ -202,6 +202,7 @@ add_action('save_post', 'acme_save_meta_box_data');
 
 // páginas de configuração 
 
+//Rede Social
 add_action('admin_menu', 'acme_social_options_page');
 
 function acme_social_options_page()
@@ -316,5 +317,121 @@ function acme_validate_options($input)
 
 function acme_social_options_section_callback()
 {
-    echo '<p>Insira os links para suas redes sociais.</p>';
+    echo '<h1>Insira os links para suas redes sociais.</h1>';
 }
+// fim da pagina rede social
+
+// contato
+
+add_action('admin_menu', 'acme_contact_options_page');
+
+function acme_contact_options_page()
+{
+    add_options_page(
+        'Contato',
+        'Contato',
+        'manage_options',
+        'contact',
+        'acme_contact_options_page_html'
+    );
+}
+
+add_action('admin_init', 'acme_contact_options_init');
+
+function acme_contact_options_field_html($args)
+{
+    $options = get_option('acme_contact_options', array());
+    $value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '';
+    $type = isset($args['type']) ? $args['type'] : 'text';
+    $maxlength = $args['label_for'] === 'acme_contact_phone' ? 'maxlength="11"' : '';
+?>
+    <input type="<?php echo $type; ?>" id="<?php echo esc_attr($args['label_for']); ?>" name="acme_contact_options[<?php echo esc_attr($args['label_for']); ?>]" value="<?php echo esc_attr($value); ?>" <?php echo $maxlength; ?>>
+<?php
+}
+
+function acme_contact_options_init()
+{
+    register_setting('acme_contact_options', 'acme_contact_options', 'acme_validate_options_contact');
+
+    add_settings_section(
+        'acme_contact_options_section',
+        'Endereço',
+        'acme_contact_options_section_callback',
+        'acme_contact_options'
+    );
+
+    add_settings_field(
+        'acme_contact_email',
+        'Email',
+        'acme_contact_options_field_html',
+        'acme_contact_options',
+        'acme_contact_options_section',
+        ['label_for' => 'acme_contact_email', 'type' => 'email']
+    );
+
+    add_settings_field(
+        'acme_contact_phone',
+        'Telefone',
+        'acme_contact_options_field_html',
+        'acme_contact_options',
+        'acme_contact_options_section',
+        ['label_for' => 'acme_contact_phone']
+    );
+}
+
+function acme_contact_options_page_html()
+{
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields('acme_contact_options');
+            do_settings_sections('acme_contact_options');
+            submit_button('Salvar Alterações');
+            ?>
+        </form>
+    </div>
+    <script>
+        document.getElementById('acme_contact_phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, '');
+            if (value.length === 11) {
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (value.length === 10) {
+                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+            }
+            e.target.value = value;
+        });
+    </script>
+<?php
+}
+
+
+function acme_validate_options_contact($input)
+{
+    $output = [];
+    if (is_array($input)) {
+        foreach ($input as $key => $value) {
+            if ($key === 'acme_contact_email') { // Corrigido aqui
+                $output[$key] = sanitize_email($value);
+            } else if ($key === 'acme_contact_phone') { // E aqui
+                $output[$key] = sanitize_text_field($value);
+            } else {
+                $output[$key] = esc_url_raw($value);
+            }
+        }
+    }
+
+    add_settings_error('acme_contact_options', 'acme_contact_options_message', 'Configurações salvas com sucesso!', 'updated');
+    return $output;
+}
+
+function acme_contact_options_section_callback()
+{
+    echo '<h1>Insira as informações de contato.</h1>';
+}
+
+//fim da pagina contato

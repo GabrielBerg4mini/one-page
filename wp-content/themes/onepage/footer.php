@@ -54,7 +54,18 @@
                     <div class="widget">
                         <h4 class="widget-title text-white mb-3">Get in Touch</h4>
                         <address class="pe-xl-15 pe-xxl-17">Moonshine St. 14/05 Light City, London, United Kingdom</address>
-                        <a href="mailto:#">info@email.com</a><br /> 00 (123) 456 78 90
+
+                    </div>
+                    <div class="widget">
+                        <h4 class="widget-title text-white mb-3">Get in Touch</h4>
+                        <?php
+                        $options = get_option('acme_contact_options', array());
+                        $email = isset($options['acme_contact_email']) ? str_replace('http://', '', $options['acme_contact_email']) : 'Email não definido';
+                        $phone = isset($options['acme_contact_phone']) ? str_replace('http://', '', $options['acme_contact_phone']) : 'Telefone não definido';
+                        $phone_link = '55' . preg_replace('/\D+/', '', $phone); // Add '55' before the phone number
+                        ?>
+                        <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a> <br>
+                        <a href="https://wa.me/<?php echo esc_attr($phone_link); ?>" target="_blank"><?php echo esc_html($phone); ?></a>
                     </div>
                     <!-- /.widget -->
                 </div>
