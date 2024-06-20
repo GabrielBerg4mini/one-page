@@ -51,19 +51,36 @@
                 </div>
                 <!-- /column -->
                 <div class="col-md-4 col-lg-3">
-                    <div class="widget">
-                        <h4 class="widget-title text-white mb-3">Get in Touch</h4>
-                        <address class="pe-xl-15 pe-xxl-17">Moonshine St. 14/05 Light City, London, United Kingdom</address>
+                    <?php
+                    function get_option_or_default($options, $key, $default)
+                    {
+                        return isset($options[$key]) ? $options[$key] : $default;
+                    }
 
-                    </div>
+                    function format_address($address_options)
+                    {
+                        $address_street = get_option_or_default($address_options, 'acme_address_street', 'Rua não definida');
+                        $address_number = get_option_or_default($address_options, 'acme_address_number', 'Número do endereço não definido');
+                        $address_city = get_option_or_default($address_options, 'acme_address_city', 'Cidade não definida');
+                        $address_state = get_option_or_default($address_options, 'acme_address_state', 'Estado não definido');
+                        $address_country = get_option_or_default($address_options, 'acme_address_country', 'País não definido');
+
+                        return $address_street . ', ' . $address_number . ', ' . $address_city . ', ' . $address_state . ', ' . $address_country;
+                    }
+                    ?>
+
                     <div class="widget">
                         <h4 class="widget-title text-white mb-3">Get in Touch</h4>
                         <?php
                         $options = get_option('acme_contact_options', array());
-                        $email = isset($options['acme_contact_email']) ? str_replace('http://', '', $options['acme_contact_email']) : 'Email não definido';
-                        $phone = isset($options['acme_contact_phone']) ? str_replace('http://', '', $options['acme_contact_phone']) : 'Telefone não definido';
-                        $phone_link = '55' . preg_replace('/\D+/', '', $phone); // Add '55' before the phone number
+                        $email = get_option_or_default($options, 'acme_contact_email', 'Email não definido');
+                        $phone = get_option_or_default($options, 'acme_contact_phone', 'Telefone não definido');
+                        $phone_link = '55' . preg_replace('/\D+/', '', $phone); // Add '55' antes do numero do telefone
+
+                        $address_options = get_option('acme_address_options', array());
+                        $address = format_address($address_options);
                         ?>
+                        <address class="pe-xl-15 pe-xxl-17"><?php echo esc_html($address); ?></address>
                         <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a> <br>
                         <a href="https://wa.me/<?php echo esc_attr($phone_link); ?>" target="_blank"><?php echo esc_html($phone); ?></a>
                     </div>

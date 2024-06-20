@@ -321,6 +321,124 @@ function acme_social_options_section_callback()
 }
 // fim da pagina rede social
 
+// endereço
+
+add_action('admin_menu', 'acme_address_options_page');
+
+function acme_address_options_page()
+{
+    add_options_page(
+        'Endereço',
+        'Endereço',
+        'manage_options',
+        'address',
+        'acme_address_options_page_html'
+    );
+}
+
+add_action('admin_init', 'acme_address_options_init');
+
+function acme_address_options_init()
+{
+    register_setting('acme_address_options', 'acme_address_options');
+
+    add_settings_section(
+        'acme_address_options_section',
+        'Endereço',
+        'acme_address_options_section_callback',
+        'acme_address_options'
+    );
+
+    add_settings_field(
+        'acme_address_country',
+        'País',
+        'acme_address_options_field_html',
+        'acme_address_options',
+        'acme_address_options_section',
+        ['label_for' => 'acme_address_country', 'type' => 'select', 'options' => ['Brasil']]
+    );
+
+    add_settings_field(
+        'acme_address_state',
+        'Estado',
+        'acme_address_options_field_html',
+        'acme_address_options',
+        'acme_address_options_section',
+        ['label_for' => 'acme_address_state', 'type' => 'select', 'options' => ['São Paulo', 'Rio de Janeiro', 'Minas Gerais']]
+    );
+
+    add_settings_field(
+        'acme_address_city',
+        'Cidade',
+        'acme_address_options_field_html',
+        'acme_address_options',
+        'acme_address_options_section',
+        ['label_for' => 'acme_address_city', 'type' => 'select', 'options' => ['Artur Nogueira', 'Campinas', 'São Paulo', 'Rio de Janeiro', 'Belo Horizonte']]
+    );
+
+    add_settings_field(
+        'acme_address_street',
+        'Rua',
+        'acme_address_options_field_html',
+        'acme_address_options',
+        'acme_address_options_section',
+        ['label_for' => 'acme_address_street', 'type' => 'text']
+    );
+
+    add_settings_field(
+        'acme_address_number',
+        'Número do Endereço',
+        'acme_address_options_field_html',
+        'acme_address_options',
+        'acme_address_options_section',
+        ['label_for' => 'acme_address_number', 'type' => 'number']
+    );
+}
+
+function acme_address_options_field_html($args)
+{
+    $options = get_option('acme_address_options', array());
+    $value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '';
+    $type = isset($args['type']) ? $args['type'] : 'text';
+    if ($type === 'select') {
+        echo '<select id="' . esc_attr($args['label_for']) . '" name="acme_address_options[' . esc_attr($args['label_for']) . ']">';
+        foreach ($args['options'] as $option) {
+            echo '<option value="' . esc_attr($option) . '" ' . selected($value, $option, false) . '>' . esc_html($option) . '</option>';
+        }
+        echo '</select>';
+    } else if ($type === 'number') {
+        echo '<input type="' . esc_attr($type) . '" id="' . esc_attr($args['label_for']) . '" name="acme_address_options[' . esc_attr($args['label_for']) . ']" value="' . esc_attr($value) . '" min="1" step="1">';
+    } else {
+        echo '<input type="' . esc_attr($type) . '" id="' . esc_attr($args['label_for']) . '" name="acme_address_options[' . esc_attr($args['label_for']) . ']" value="' . esc_attr($value) . '">';
+    }
+}
+
+function acme_address_options_section_callback()
+{
+    echo '<p>Insira as informações de endereço.</p>';
+}
+
+function acme_address_options_page_html()
+{
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields('acme_address_options');
+            do_settings_sections('acme_address_options');
+            submit_button('Salvar Alterações');
+            ?>
+        </form>
+    </div>
+<?php
+}
+// fim da pagina endereço
+
+
 // contato
 
 add_action('admin_menu', 'acme_contact_options_page');
